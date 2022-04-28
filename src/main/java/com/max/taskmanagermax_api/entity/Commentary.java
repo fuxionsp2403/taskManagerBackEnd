@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table (name = "comentarios")
-public class Comment {
+public class Commentary {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column(name = "idComentario")
