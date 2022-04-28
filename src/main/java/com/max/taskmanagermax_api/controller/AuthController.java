@@ -92,9 +92,7 @@ public class AuthController {
 //        user.setRole(Collections.singleton(role));
     
     
-        /**
-         * registrar a un usuario con "ROLE_USER" " sin crear nueva instancia.
-         */
+
         for (Role role : roleRepo.findAll()) {
             if (role.getName().equals("ROLE_USER")) {
                 user.setRole(Collections.singleton(role));
@@ -106,9 +104,7 @@ public class AuthController {
 //        Role role = roleRepo.findByName("ROLE_USER").get();
 //        user.setRole(Collections.singleton(role));
 //
-        /**
-         * registrar a un usuario con "ROLE_ADMIN" " sin crear nueva instancia.
-         */
+
 //        Role role2 = roleRepo.findByName("ROLE_ADMIN").get();
 //        user.setRole(Collections.singleton(role2));
         
