@@ -3,6 +3,8 @@ package com.max.taskmanagermax_api.entity;
 import java.util.Date;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.*;
 
 @Data
@@ -38,4 +40,10 @@ public class Task {
 	
 	@Column(name = "estado")
 	private int estado;
+	
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idProyecto")
+	private Project proyecto;
+	
 }
