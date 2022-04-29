@@ -8,7 +8,7 @@ import com.max.taskmanagermax_api.entity.Commentary;
 import com.max.taskmanagermax_api.service.CommentaryService;
 
 @RestController
-@RequestMapping("/url/commentary")
+@RequestMapping("/api/commentary")
 public class CommentaryController {
 	@Autowired
 	private CommentaryService service;

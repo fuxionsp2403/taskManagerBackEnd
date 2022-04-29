@@ -8,7 +8,7 @@ import com.max.taskmanagermax_api.entity.Task;
 import com.max.taskmanagermax_api.service.TaskService;
 
 @RestController
-@RequestMapping("/url/task")
+@RequestMapping("/api/task")
 public class TaskController {
 	@Autowired
 	private TaskService service;

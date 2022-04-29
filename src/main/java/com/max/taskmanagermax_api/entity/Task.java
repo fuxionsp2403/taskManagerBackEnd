@@ -24,9 +24,10 @@ public class Task {
 	@Column(name = "contenidoTarea", length = 150)
 	private String contenidoTarea;
 	
-	// falta anotaciones para relacionar con la tabla de usario (gonzalo)
-	@Column(name = "idUsuario")
-	private int idUsuario;
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id")
+	private User usuario;
 	
 	@Column(name = "fechaRegistro")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -45,5 +46,13 @@ public class Task {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idProyecto")
 	private Project proyecto;
+
+	public Task(String nombreTarea, String contenidoTarea, Date fechaRegistro, Date fechaFinaliza, int estado) {
+		this.nombreTarea = nombreTarea;
+		this.contenidoTarea = contenidoTarea;
+		this.fechaRegistro = fechaRegistro;
+		this.fechaFinaliza = fechaFinaliza;
+		this.estado = estado;
+	}
 	
 }
