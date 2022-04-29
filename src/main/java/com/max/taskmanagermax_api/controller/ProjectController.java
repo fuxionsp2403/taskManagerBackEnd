@@ -8,7 +8,7 @@ import com.max.taskmanagermax_api.entity.Project;
 import com.max.taskmanagermax_api.service.ProjectService;
 
 @RestController
-@RequestMapping("/url/project")
+@RequestMapping("/api/project")
 public class ProjectController {
 	@Autowired
 	private ProjectService service;

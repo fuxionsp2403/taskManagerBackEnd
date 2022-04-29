@@ -8,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -35,5 +36,11 @@ public class Commentary {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idTarea")
 	private Task tarea;
+
+	public Commentary(String contenidoComentario, Date fechaRegistro, int idUsuario) {
+		this.contenidoComentario = contenidoComentario;
+		this.fechaRegistro = fechaRegistro;
+		this.idUsuario = idUsuario;
+	}
 	
 }

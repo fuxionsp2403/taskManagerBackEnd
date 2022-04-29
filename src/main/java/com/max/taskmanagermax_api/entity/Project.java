@@ -1,11 +1,17 @@
 package com.max.taskmanagermax_api.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -32,7 +38,20 @@ public class Project {
 	@Column(name = "estado")
 	private int estado;
 	
-	// falta notaciones para relacionar con la tabla de usario (gonzalo)
-	@Column(name = "idUsuario")
-	private int idUsuario;
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "usuario_proyecto", joinColumns = @JoinColumn(name = "proyecto_id", referencedColumnName = "idProyecto"),
+    inverseJoinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"))
+	private Set<User> usuarios=new HashSet<>();
+
+	public Project(String nombreProyecto, Date fechaRegistro, Date fechaFinaliza, int estado) {
+		this.nombreProyecto = nombreProyecto;
+		this.fechaRegistro = fechaRegistro;
+		this.fechaFinaliza = fechaFinaliza;
+		this.estado = estado;
+	}
+	
+	
+	
+	
 }
