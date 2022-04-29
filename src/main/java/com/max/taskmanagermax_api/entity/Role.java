@@ -1,14 +1,14 @@
 package com.max.taskmanagermax_api.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.max.taskmanagermax_api.enums.RoleName;
+import com.sun.istack.NotNull;
+import lombok.*;
 
 
 import javax.persistence.*;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table (name = "roles")
@@ -18,7 +18,12 @@ public class Role {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(length = 60)
-    private String name;
+    @NotNull
+    @Enumerated (EnumType.STRING)
+    @Column
+    private RoleName roleName;
     
+    public Role(@NotNull RoleName roleName) {
+        this.roleName = roleName;
+    }
 }

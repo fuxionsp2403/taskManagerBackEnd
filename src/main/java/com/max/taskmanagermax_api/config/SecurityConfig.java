@@ -40,6 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthFilter();
     }
     
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {

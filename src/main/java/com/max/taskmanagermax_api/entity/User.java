@@ -1,17 +1,16 @@
 package com.max.taskmanagermax_api.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table (name = "usuario", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"}),  @UniqueConstraint(columnNames = "email")})
 public class User {
@@ -27,9 +26,19 @@ public class User {
     private String password;
     private int estado;
     
+    
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "usuario-rol", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
+    @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id"))
-    private Set<Role> role = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
+    
+    public User(String nombre, String apellido, String username, String email, String password, int estado){
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.estado = estado;
+    }
     
 }

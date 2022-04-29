@@ -12,42 +12,40 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-    
+
     @Value("${app.jwt-secret}")
     private String jwtSecret;
-    
+
     @Value("${app.jwt-expiration-milliseconds}")
     private int jwtExpirationInMs;
-    
+
     public String generateToken(Authentication authentication) {
-        
+
         String username = authentication.getName();
         Date actualDate = new Date();
-        
-        Date expirationDate = new Date(actualDate.getTime() + jwtExpirationInMs);
-        
-        String token = Jwts.builder().setSubject(username)
+
+        Date expirationDate = new Date(actualDate.getTime() + jwtExpirationInMs * 1000L);
+    
+        return Jwts.builder().setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
-        
-        return token;
     }
-    
-    
-    
-    public String getUsernameFromJWT(String token) {
+
+
+
+    public String getUsernameFromJWTToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
-        
+
         return claims.getSubject();
     }
-    
 
-    
+
+
     public boolean validToken(String token) {
         try {
             Jwts.parser()
