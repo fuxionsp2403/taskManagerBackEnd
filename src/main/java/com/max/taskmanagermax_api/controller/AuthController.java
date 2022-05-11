@@ -29,6 +29,7 @@ import java.util.*;
 @RestController
 @RequestMapping ("/api/auth")
 @CrossOrigin
+@SuppressWarnings({"all"})
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -61,7 +62,13 @@ public class AuthController {
         JwtAuthResponseDTO jwtAuthResponseDTO = new JwtAuthResponseDTO(token, userDetails.getUsername(), userDetails.getAuthorities());
         return new ResponseEntity(jwtAuthResponseDTO, HttpStatus.OK);
     }
-
+    
+    @GetMapping ("/signIn/{id}")
+    public ResponseEntity<User> knownUser(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.of(userService.findById(id));
+    }
+    
+    
     @PostMapping ("/signUp")
     public ResponseEntity<?> signUpUser(@Valid @RequestBody SignUpDTO signUpDTO) {
         if (userService.existByUsername(signUpDTO.getUsername())) {
