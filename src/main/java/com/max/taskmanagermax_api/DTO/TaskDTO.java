@@ -6,7 +6,7 @@ import lombok.*;
 
 @Getter
 @Setter
-public class DTOTask {
+public class TaskDTO {
 private int idTarea;
 	private String nombreTarea;
 	private String contenidoTarea;
