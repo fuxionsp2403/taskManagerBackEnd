@@ -4,11 +4,9 @@ import java.util.*;
 
 
 import com.max.taskmanagermax_api.DTO.CommentDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.max.taskmanagermax_api.entity.Comment;
 import com.max.taskmanagermax_api.service.CommentService;
 
 
@@ -22,12 +20,7 @@ public class CommentController {
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
-
-//    @GetMapping("/{task}")
-//	@ResponseBody
-//	public ResponseEntity<List<Comment>> listaDeComentarios(@PathVariable("task")int task){
-//		return ResponseEntity.ok(commentService.listadoComentarioPorTarea(task));
-//	}
+    
     
     @GetMapping("/tasks/{taskId}/comments/")
     public List<CommentDTO> listCommentsByTaskId(@PathVariable (value = "taskId") long taskId) {

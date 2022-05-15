@@ -12,11 +12,11 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table (name = "usuario", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"}),  @UniqueConstraint(columnNames = "email")})
+@Table (name = "usuario", uniqueConstraints = {@UniqueConstraint (columnNames = {"username"}), @UniqueConstraint (columnNames = "email")})
 public class User {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     
     private String nombre;
@@ -24,15 +24,15 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private int estado;
+    private int    estado;
     
     
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id"))
+    @ManyToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable (name = "usuario_rol", joinColumns = @JoinColumn (name = "usuario_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn (name = "rol_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
     
-    public User(String nombre, String apellido, String username, String email, String password, int estado){
+    public User(String nombre, String apellido, String username, String email, String password, int estado) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.username = username;

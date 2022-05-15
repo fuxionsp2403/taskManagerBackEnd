@@ -16,10 +16,7 @@ import lombok.*;
 @Entity
 @Table (name = "proyectos", uniqueConstraints = {@UniqueConstraint (columnNames = {"nombreProyecto"})})
 public class Project {
-    /**
-     * Si vamos a poner nombres en español y que las entidades se llamen igual a los campos,
-     * no pongamos nombre de columnas ya que así evitaremos la verbosidad
-     */
+    
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long idProyecto;
@@ -36,15 +33,15 @@ public class Project {
     private Date fechaFinaliza;
     
     private int estado;
-
-
+    
+    
     @ManyToMany (fetch = FetchType.LAZY)
     @JoinTable (name = "usuario_proyecto", joinColumns = @JoinColumn (name = "proyecto_id", referencedColumnName = "idProyecto"),
             inverseJoinColumns = @JoinColumn (name = "usuario_id", referencedColumnName = "id"))
     private Set<User> usuarios = new HashSet<>();
     
     @JsonBackReference
-    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "proyecto", cascade = CascadeType.ALL)
     private Set<Task> tasks = new HashSet<>();
     
 }

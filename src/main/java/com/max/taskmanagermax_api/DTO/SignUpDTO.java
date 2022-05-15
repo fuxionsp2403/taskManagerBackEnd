@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class SignUpDTO {
-
+    
     @NotBlank
     private String      nombre;
     @NotBlank

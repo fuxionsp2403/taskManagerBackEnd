@@ -14,7 +14,6 @@ import java.util.Optional;
 @Transactional
 public class RoleService {
     
-
     private final RoleRepository roleRepository;
     
     @Autowired

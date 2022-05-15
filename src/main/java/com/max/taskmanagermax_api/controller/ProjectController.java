@@ -11,8 +11,6 @@ import com.max.taskmanagermax_api.service.ProjectService;
 
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
 
 @RestController
 @RequestMapping ("/api/projects")

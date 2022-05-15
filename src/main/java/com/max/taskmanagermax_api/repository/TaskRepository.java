@@ -12,5 +12,4 @@ import com.max.taskmanagermax_api.entity.Task;
 public interface TaskRepository extends JpaRepository<Task, Long> {
     
     List<Task> findByProyectoIdProyecto(Long projectId);
-    
 }

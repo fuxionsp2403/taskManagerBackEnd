@@ -35,11 +35,6 @@ public class ProjectServiceImpl implements ProjectService {
         this.userRepository = userRepository;
     }
     
-//    @Override
-//    public List<Project> listadoProyectoPorUsuario(int idUsuario) {
-//        return projectRepository.listadoProyectoPorUsuario(idUsuario);
-//    }
-    
     @Override
     public ProjectDTO saveProject(ProjectDTO projectDTO) {
         

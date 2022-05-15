@@ -10,7 +10,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ErrorDetailsDTO {
     
-    private Date tiempo;
+    private Date   tiempo;
     private String mensaje;
     private String detalles;
 }

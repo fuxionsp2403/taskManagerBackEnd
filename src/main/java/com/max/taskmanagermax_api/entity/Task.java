@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
 
@@ -19,6 +18,7 @@ import lombok.*;
 @Entity
 @Table (name = "tareas")
 public class Task {
+    
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long idTarea;
@@ -28,12 +28,6 @@ public class Task {
     
     @Column (length = 150)
     private String contenidoTarea;
-    
-//    @JsonIgnoreProperties ({"hibernateLazyInitializer", "handler"})
-//    @ManyToOne (fetch = FetchType.LAZY)
-//    @JoinColumn (name = "id")
-//    private User usuario;
-    
     
     @Temporal (TemporalType.TIMESTAMP)
     @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
@@ -45,12 +39,12 @@ public class Task {
     
     private int estado;
     
-//    @JsonIgnoreProperties ({"hibernateLazyInitializer", "handler"})
+    
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "idProyecto", nullable = false)
     private Project proyecto;
     
-    @OneToMany(mappedBy = "tarea", cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "tarea", cascade = CascadeType.ALL)
     @JsonBackReference
     private Set<Comment> comments = new HashSet<>();
     

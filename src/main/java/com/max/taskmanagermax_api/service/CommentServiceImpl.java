@@ -7,11 +7,9 @@ import java.util.stream.Collectors;
 
 import com.max.taskmanagermax_api.DTO.CommentDTO;
 import com.max.taskmanagermax_api.entity.Task;
-import com.max.taskmanagermax_api.entity.User;
 import com.max.taskmanagermax_api.exceptions.MaxAppException;
 import com.max.taskmanagermax_api.exceptions.ResourceNotFoundException;
 import com.max.taskmanagermax_api.repository.TaskRepository;
-import com.max.taskmanagermax_api.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,28 +24,22 @@ public class CommentServiceImpl implements CommentService {
 
     private final TaskRepository taskRepository;
 
-//    private final UserRepository userRepository;
-
     public CommentServiceImpl(CommentRepository commentRepository, ModelMapper modelMapper, TaskRepository taskRepository /*UserRepository userRepository*/) {
         this.commentRepository = commentRepository;
         this.modelMapper = modelMapper;
         this.taskRepository = taskRepository;
-//        this.userRepository = userRepository;
     }
     
 
     @Override
     public CommentDTO saveComment(long taskId, CommentDTO commentDTO) {
-//        User user = userRepository
-//                .findById(userId)
-//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+        
         Comment comment = mappingEntity(commentDTO);
         Task task = taskRepository
                 .findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task", "id", taskId));
         comment.setTarea(task);
         comment.setContenidoComentario(commentDTO.getContenido());
-//        comment.setUserId(user);
         comment.setFechaRegistro(new Date());
         Comment newComment = commentRepository.save(comment);
         return mappingDTO(newComment);
@@ -66,11 +58,6 @@ public class CommentServiceImpl implements CommentService {
     public CommentDTO findCommentById(long taskId, long commentId) {
         return mappingDTO(TaskCommentUser(taskId, commentId));
     }
-    
-//    @Override
-//    public List<CommentDTO> findCommentsByTaskId(long taskId) {
-//        return null;
-//    }
 
     @Override
     public List<CommentDTO> findCommentsByTaskId(long taskId) {
@@ -99,9 +86,7 @@ public class CommentServiceImpl implements CommentService {
         Task task = taskRepository
                 .findById(taskId)
                 .orElseThrow(()-> new ResourceNotFoundException("Task", "id", taskId));
-//        User user = userRepository
-//                .findById(userId)
-//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+        
         Comment comment = commentRepository
                 .findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
@@ -109,9 +94,7 @@ public class CommentServiceImpl implements CommentService {
         if (!comment.getTarea().getIdTarea().equals(task.getIdTarea())) {
             throw new MaxAppException(HttpStatus.BAD_REQUEST, "El comentario no pertenece a la tarea");
         }
-//        if (!comment.getUserId().getId().equals(user.getId())) {
-//            throw new MaxAppException(HttpStatus.BAD_REQUEST, "El comentario no pertenece al usuario");
-//        }
+        
         return comment;
     }
 
