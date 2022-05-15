@@ -1,9 +1,12 @@
 package com.max.taskmanagermax_api.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -46,6 +49,10 @@ public class Task {
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "idProyecto", nullable = false)
     private Project proyecto;
+    
+    @OneToMany(mappedBy = "tarea", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Set<Comment> comments = new HashSet<>();
     
     public Task(String nombreTarea, String contenidoTarea, Date fechaRegistro, Date fechaFinaliza, int estado) {
         this.nombreTarea = nombreTarea;
