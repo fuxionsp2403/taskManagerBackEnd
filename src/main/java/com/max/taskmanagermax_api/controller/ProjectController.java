@@ -50,6 +50,6 @@ public class ProjectController {
     @DeleteMapping ("/{id}")
     public ResponseEntity<String> deleteProject(@PathVariable (name = "id") long id) {
         projectService.deleteProject(id);
-        return ResponseEntity.ok("Proyecto eliminado con éxito" + HttpStatus.OK);
+        return new ResponseEntity<>("Proyecto eliminado con éxito", HttpStatus.OK);
     }
 }

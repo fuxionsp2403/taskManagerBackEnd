@@ -38,7 +38,7 @@ public class Project {
     private int estado;
 
 
-    @ManyToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany (fetch = FetchType.LAZY)
     @JoinTable (name = "usuario_proyecto", joinColumns = @JoinColumn (name = "proyecto_id", referencedColumnName = "idProyecto"),
             inverseJoinColumns = @JoinColumn (name = "usuario_id", referencedColumnName = "id"))
     private Set<User> usuarios = new HashSet<>();
