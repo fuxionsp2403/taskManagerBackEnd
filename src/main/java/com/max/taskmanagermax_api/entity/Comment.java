@@ -29,12 +29,11 @@ public class Comment {
     @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private Date fechaRegistro;
     
-    @ManyToOne
-    @JoinColumn (name = "id", nullable = false)
-    @JsonIgnoreProperties ({"hibernateLazyInitializer", "handler"})
-    private User userId;
+//    @ManyToOne
+//    @JoinColumn (name = "id", nullable = false)
+//    @JsonIgnoreProperties ({"hibernateLazyInitializer", "handler"})
+//    private User userId;
     
-    @JsonIgnoreProperties ({"hibernateLazyInitializer", "handler"})
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "idTarea", nullable = false)
     private Task tarea;
