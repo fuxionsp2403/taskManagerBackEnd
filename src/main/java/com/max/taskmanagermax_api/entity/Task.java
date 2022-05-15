@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -17,7 +18,7 @@ import lombok.*;
 public class Task {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private int idTarea;
+    private Long idTarea;
     
     @Column (length = 50)
     private String nombreTarea;
@@ -25,10 +26,10 @@ public class Task {
     @Column (length = 150)
     private String contenidoTarea;
     
-    @JsonIgnoreProperties ({"hibernateLazyInitializer", "handler"})
-    @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn (name = "id")
-    private User usuario;
+//    @JsonIgnoreProperties ({"hibernateLazyInitializer", "handler"})
+//    @ManyToOne (fetch = FetchType.LAZY)
+//    @JoinColumn (name = "id")
+//    private User usuario;
     
     
     @Temporal (TemporalType.TIMESTAMP)
@@ -41,9 +42,9 @@ public class Task {
     
     private int estado;
     
-    @JsonIgnoreProperties ({"hibernateLazyInitializer", "handler"})
+//    @JsonIgnoreProperties ({"hibernateLazyInitializer", "handler"})
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn (name = "idProyecto")
+    @JoinColumn (name = "idProyecto", nullable = false)
     private Project proyecto;
     
     public Task(String nombreTarea, String contenidoTarea, Date fechaRegistro, Date fechaFinaliza, int estado) {

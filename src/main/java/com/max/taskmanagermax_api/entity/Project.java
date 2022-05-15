@@ -5,6 +5,7 @@ import java.util.*;
 import javax.persistence.*;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.*;
@@ -41,5 +42,9 @@ public class Project {
     @JoinTable (name = "usuario_proyecto", joinColumns = @JoinColumn (name = "proyecto_id", referencedColumnName = "idProyecto"),
             inverseJoinColumns = @JoinColumn (name = "usuario_id", referencedColumnName = "id"))
     private Set<User> usuarios = new HashSet<>();
+    
+    @JsonBackReference
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
+    private Set<Task> tasks = new HashSet<>();
     
 }
