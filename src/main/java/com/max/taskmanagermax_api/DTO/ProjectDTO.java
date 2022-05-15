@@ -1,13 +1,13 @@
 package com.max.taskmanagermax_api.DTO;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 import com.max.taskmanagermax_api.entity.User;
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 public class ProjectDTO {
 	private int idProyecto;
     //@NotEmpty
@@ -16,5 +16,6 @@ public class ProjectDTO {
     //@NotEmpty
 	private Date fechaFinaliza;
 	private int       estado;
-	private List<User> usuarios;
+	private List<String> nameUser = new ArrayList<>();
+    private Set<User> usuarios = new HashSet<>();
 }

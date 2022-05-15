@@ -1,13 +1,17 @@
 package com.max.taskmanagermax_api.service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 import com.max.taskmanagermax_api.DTO.ProjectDTO;
+import com.max.taskmanagermax_api.entity.User;
+import com.max.taskmanagermax_api.exceptions.MaxAppException;
 import com.max.taskmanagermax_api.exceptions.ResourceNotFoundException;
+import com.max.taskmanagermax_api.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
@@ -16,35 +20,47 @@ import com.max.taskmanagermax_api.repository.ProjectRepository;
 
 @Slf4j
 @Service
-public class ProjectServiceImplement implements ProjectService {
+public class ProjectServiceImpl implements ProjectService {
     
-    private final ModelMapper           modelMapper;
-	private final ProjectRepository     projectRepository;
+    private final ModelMapper       modelMapper;
+    private final ProjectRepository projectRepository;
+    private final UserRepository    userRepository;
     
     @Autowired
-    public ProjectServiceImplement(ModelMapper modelMapper, ProjectRepository projectRepository) {
+    public ProjectServiceImpl(ModelMapper modelMapper, ProjectRepository projectRepository, UserRepository userRepository) {
         this.modelMapper = modelMapper;
         this.projectRepository = projectRepository;
+        this.userRepository = userRepository;
     }
     
+//    @Override
+//    public List<Project> listadoProyectoPorUsuario(int idUsuario) {
+//        return projectRepository.listadoProyectoPorUsuario(idUsuario);
+//    }
+    
     @Override
-	public List<Project> listadoProyectoPorUsuario(int idUsuario) {
-		return projectRepository.listadoProyectoPorUsuario(idUsuario);
-	}
-
-	@Override
-	public ProjectDTO saveProject(ProjectDTO projectDTO) {
+    public ProjectDTO saveProject(ProjectDTO projectDTO) {
+        
+        
         Project project = mappingEntity(projectDTO);
         project.setFechaRegistro(new Date());
         project.setEstado(1);
+        Set<User> user = new HashSet<>();
+        
+        for (int i = 0; i < projectDTO.getNameUser().size(); i++) {
+            user.add(userRepository.findByUsername((projectDTO.getNameUser().get(i))));
+        }
+        
+        project.setUsuarios(user);
         
         Project newProject = projectRepository.save(project);
         
-		return mappingDTO(newProject);
-	}
+        return mappingDTO(newProject);
+    }
     
     @Override
     public ProjectDTO updateProject(ProjectDTO projectDTO, long id) {
+        
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Publication", "id", id));
         
@@ -52,6 +68,14 @@ public class ProjectServiceImplement implements ProjectService {
         project.setFechaRegistro(new Date());
         project.setNombreProyecto(projectDTO.getNombreProyecto());
         project.setFechaFinaliza(projectDTO.getFechaFinaliza());
+    
+        Set<User> user = new HashSet<>();
+    
+        for (int i = 0; i < projectDTO.getNameUser().size(); i++) {
+            user.add(userRepository.findByUsername((projectDTO.getNameUser().get(i))));
+        }
+    
+        project.setUsuarios(user);
         
         Project updateProject = projectRepository.save(project);
         return mappingDTO(updateProject);
@@ -81,5 +105,5 @@ public class ProjectServiceImplement implements ProjectService {
     private Project mappingEntity(ProjectDTO projectDTO) {
         return modelMapper.map(projectDTO, Project.class);
     }
-
+    
 }

@@ -14,11 +14,19 @@ public class UserService {
     
     private final UserRepository userRepository;
     
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+    
+//    public Optional<User> findByIdInSessions(User userId) {
+//        return userRepository.findByIdInSessions(userId);
+//    }
+    
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     
-    public Optional<User> getByUserName(String username) {
+    public User getByUserName(String username) {
         return userRepository.findByUsername(username);
     }
     

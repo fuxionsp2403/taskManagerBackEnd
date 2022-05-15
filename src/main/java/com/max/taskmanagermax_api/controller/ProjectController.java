@@ -2,7 +2,7 @@ package com.max.taskmanagermax_api.controller;
 
 
 import com.max.taskmanagermax_api.DTO.ProjectDTO;
-import lombok.extern.slf4j.Slf4j;
+import com.max.taskmanagermax_api.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,16 +11,20 @@ import com.max.taskmanagermax_api.service.ProjectService;
 
 
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
 
-@Slf4j
 @RestController
-@RequestMapping ("/api/project")
+@RequestMapping ("/api/projects")
 @SuppressWarnings({"all"})
 public class ProjectController {
     private final ProjectService projectService;
     
-    public ProjectController(ProjectService projectService) {
+    private final UserRepository userRepository;
+    
+    public ProjectController(ProjectService projectService, UserRepository userRepository) {
         this.projectService = projectService;
+        this.userRepository = userRepository;
     }
     
     @PreAuthorize ("hasRole('ADMIN')")
