@@ -9,11 +9,9 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 public class SignInDTO {
-
+    
     @NotBlank
     private String usernameOrEmail;
     @NotBlank
     private String password;
-
-
 }

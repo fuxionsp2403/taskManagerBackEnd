@@ -1,66 +1,59 @@
 package com.max.taskmanagermax_api.controller;
 
-import java.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
+
+import com.max.taskmanagermax_api.DTO.TaskDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.max.taskmanagermax_api.entity.Task;
 import com.max.taskmanagermax_api.service.TaskService;
 
+
+import javax.validation.Valid;
+
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping ("/api/")
 public class TaskController {
-	@Autowired
-	private TaskService service;
-	
-	@GetMapping("/{project}")
-	@ResponseBody
-	public ResponseEntity<List<Task>> listaDeTareas(@PathVariable("project")int proyecto){
-		return ResponseEntity.ok(service.listaTareaPorProyecto(proyecto));
-	}
-	
-	@PostMapping
-	@ResponseBody
-	public ResponseEntity<HashMap<String, Object>> registrarTarea(@RequestBody Task task){
-		HashMap<String, Object> mensajeRespuesta = new HashMap<String, Object>();
-		try {
-			task.setIdTarea(0);
-			task.setFechaRegistro(new Date());
-			task.setEstado(1);
-			Task respuestaTask=service.registrarActualizarTarea(task);
-			if(respuestaTask==null) {
-				mensajeRespuesta.put("message", "Error en el registro ");
-				mensajeRespuesta.put("status", "error");
-			}else {
-				mensajeRespuesta.put("message", "Registro Exitoso ");
-				mensajeRespuesta.put("status", "OK");
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-			mensajeRespuesta.put("message", "Error en el registro " + e.getMessage());
-			mensajeRespuesta.put("status", "error");
-		}
-		return ResponseEntity.ok(mensajeRespuesta);
-	}
-	
-	@PutMapping
-	@ResponseBody
-	public ResponseEntity<HashMap<String, Object>> actualizaTarea(@RequestBody Task task){
-		HashMap<String, Object> mensajeRespuesta = new HashMap<String, Object>();
-		try {
-			Task respuestaTask=service.registrarActualizarTarea(task);
-			if(respuestaTask==null) {
-				mensajeRespuesta.put("message", "Error al Atualizar ");
-				mensajeRespuesta.put("status", "error");
-			}else {
-				mensajeRespuesta.put("message", "Actualizacion Exitosa ");
-				mensajeRespuesta.put("status", "OK");
-			}
-		}catch (Exception e) {
-			e.printStackTrace();
-			mensajeRespuesta.put("message", "Error en el registro " + e.getMessage());
-			mensajeRespuesta.put("status", "error");
-		}
-		return ResponseEntity.ok(mensajeRespuesta);
-	}
+    private final TaskService taskService;
+    
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+    
+    
+    @GetMapping ("projects/{projectId}/tasks/{taskId}")
+    public ResponseEntity<TaskDTO> getTask(@PathVariable (value = "projectId") long projectId,
+                                            @PathVariable (value = "taskId") long taskId) {
+        TaskDTO task = taskService.findTaskById(projectId, taskId);
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+    
+    @GetMapping ("projects/{projectId}/tasks")
+    public List<TaskDTO> getTasks(@PathVariable (value = "projectId") long projectId) {
+        return taskService.findTasksByProjectId(projectId);
+    }
+    
+    @PostMapping ("projects/{projectId}/tasks")
+    public ResponseEntity<TaskDTO> createTask(@PathVariable (value = "projectId") long projectId,
+                                                @Valid @RequestBody TaskDTO taskDTO) {
+        
+        return new ResponseEntity<>(taskService.saveTask(projectId, taskDTO), HttpStatus.CREATED);
+    }
+    
+    @PutMapping ("projects/{projectId}/tasks/{taskId}")
+    @ResponseBody
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable (value = "projectId") long projectId,
+                                                @PathVariable (value = "taskId") long taskId,
+                                                @RequestBody TaskDTO taskDTO) {
+        TaskDTO updateTasktById = taskService.updateTask(projectId, taskId, taskDTO);
+        return new ResponseEntity<>(updateTasktById, HttpStatus.OK);
+    }
+    
+    @DeleteMapping ("projects/{projectId}/tasks/{taskId}")
+    public ResponseEntity<String> deleteTask(@PathVariable (value = "projectId") long projectId,
+                                                @PathVariable (value = "taskId") long taskId) {
+        taskService.deleteTask(projectId, taskId);
+        return new ResponseEntity<>("Tarea eliminada con éxito", HttpStatus.OK);
+    }
 }
