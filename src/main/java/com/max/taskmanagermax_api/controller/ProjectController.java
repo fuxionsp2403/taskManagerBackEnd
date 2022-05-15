@@ -2,6 +2,7 @@ package com.max.taskmanagermax_api.controller;
 
 
 import com.max.taskmanagermax_api.DTO.ProjectDTO;
+import com.max.taskmanagermax_api.DTO.ProjectResponseDTO;
 import com.max.taskmanagermax_api.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +12,11 @@ import com.max.taskmanagermax_api.service.ProjectService;
 
 
 import javax.validation.Valid;
+import static com.max.taskmanagermax_api.utility.PaginationConstants.*;
 
 @RestController
 @RequestMapping ("/api/projects")
-@SuppressWarnings({"all"})
+@SuppressWarnings ({"all"})
 public class ProjectController {
     private final ProjectService projectService;
     
@@ -23,6 +25,15 @@ public class ProjectController {
     public ProjectController(ProjectService projectService, UserRepository userRepository) {
         this.projectService = projectService;
         this.userRepository = userRepository;
+    }
+    
+    @GetMapping
+    public ProjectResponseDTO listProjects(
+                                @RequestParam (value = "pageNo", defaultValue = NUMBER_OF_PAGE_BY_DEFAULT, required = false) int pageNumber,
+                                @RequestParam (value = "pageSize", defaultValue = SIZE_OF_PAGE_BY_DEFAULT, required = false) int pageSize,
+                                @RequestParam (value = "sortBy", defaultValue = ORDER_BY_DEFAULT, required = false) String sortById,
+                                @RequestParam (value = "sortDir", defaultValue = ORDER_DIRECTION_BY_DEFAULT, required = false) String sortDir) {
+        return projectService.findAllProjects(pageNumber, pageSize, sortById, sortDir);
     }
     
     @PreAuthorize ("hasRole('ADMIN')")

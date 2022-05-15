@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 
 import com.max.taskmanagermax_api.DTO.ProjectDTO;
+import com.max.taskmanagermax_api.DTO.ProjectResponseDTO;
 import com.max.taskmanagermax_api.entity.User;
 import com.max.taskmanagermax_api.exceptions.MaxAppException;
 import com.max.taskmanagermax_api.exceptions.ResourceNotFoundException;
@@ -13,6 +14,10 @@ import com.max.taskmanagermax_api.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
@@ -49,20 +54,20 @@ public class ProjectServiceImpl implements ProjectService {
         }
         
         project.setUsuarios(user);
-
-
+        
+        
         if (projectRepository.existsByNombreProyecto(project.getNombreProyecto())) {
             throw new MaxAppException(HttpStatus.BAD_REQUEST, "El nombre ya existe");
         } else if (project.getFechaFinaliza().before(new Date())) {
             throw new MaxAppException(HttpStatus.BAD_REQUEST, "El proyecto tiene que programarse un día después de la fecha esperada");
-        } else  {
+        } else {
             project.setNombreProyecto(project.getNombreProyecto());
             project.setFechaFinaliza(project.getFechaFinaliza());
         }
         
         Project newProject = projectRepository.save(project);
         
-
+        
         return mappingDTO(newProject);
     }
     
@@ -77,23 +82,46 @@ public class ProjectServiceImpl implements ProjectService {
         project.setEstado(1);
         project.setNombreProyecto(projectDTO.getNombreProyecto());
         project.setFechaFinaliza(projectDTO.getFechaFinaliza());
-    
+        
         Set<User> user = new HashSet<>();
-    
+        
         for (int i = 0; i < projectDTO.getNameUser().size(); i++) {
             user.add(userRepository.findByUsername((projectDTO.getNameUser().get(i))));
         }
-    
+        
         if (project.getFechaFinaliza().before(new Date())) {
             throw new MaxAppException(HttpStatus.BAD_REQUEST, "El proyecto tiene que programarse un día después de la fecha esperada");
         } else {
             project.setFechaFinaliza(project.getFechaFinaliza());
         }
-    
+        
         project.setUsuarios(user);
         
         Project updateProject = projectRepository.save(project);
         return mappingDTO(updateProject);
+    }
+    
+    @Override
+    public ProjectResponseDTO findAllProjects(int numberPage, int sizePage, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(numberPage, sizePage, sort);
+        Page<Project> projects = projectRepository.findAll(pageable);
+        
+        List<Project> listOfProjects = projects.getContent();
+        List<ProjectDTO> content = listOfProjects.stream()
+                .map(this::mappingDTO)
+                .collect(Collectors.toList());
+        
+        ProjectResponseDTO projectResponseDTO = new ProjectResponseDTO();
+        projectResponseDTO.setContent(content);
+        projectResponseDTO.setNumberPage(projects.getNumber());
+        projectResponseDTO.setSizePage(projects.getSize());
+        projectResponseDTO.setTotalElements(projects.getTotalElements());
+        projectResponseDTO.setTotalPages(projects.getTotalPages());
+        projectResponseDTO.setLast(projects.isLast());
+        
+        return projectResponseDTO;
+        
     }
     
     @Override
