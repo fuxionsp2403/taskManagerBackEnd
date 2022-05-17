@@ -6,6 +6,126 @@
      - Las autenticaciones al iniciar sesión se hacen con un token (seguridad tipo bearer)
      - Solo roles de administrador pueden crear proyectos
 
+### :eyeglasses: Open Api  : 
+> - base url/v2/api-docs
+> - baseurl/swagger-ui/index.html#/
+>
+#### Ejemplo de un endpoint
+``` json
+"/api/projects": {
+      "get": {
+        "tags": [
+          "project-controller"
+        ],
+        "summary": "listProjects",
+        "operationId": "listProjectsUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "pageNo",
+            "in": "query",
+            "description": "pageNo",
+            "required": false,
+            "type": "integer",
+            "default": 0,
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "pageSize",
+            "required": false,
+            "type": "integer",
+            "default": 10,
+            "format": "int32"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "sortBy",
+            "required": false,
+            "type": "string",
+            "default": "idProyecto"
+          },
+          {
+            "name": "sortDir",
+            "in": "query",
+            "description": "sortDir",
+            "required": false,
+            "type": "string",
+            "default": "asc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ProjectResponseDTO"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "project-controller"
+        ],
+        "summary": "saveProject",
+        "operationId": "saveProjectUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "projectDTO",
+            "description": "projectDTO",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ProjectDTO"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+```
+-----
+
+### :palm_tree: ~~**Arbol de endpoints**~~: 
+
 ```yaml 
 |- Autenticacion 	
 |		|
