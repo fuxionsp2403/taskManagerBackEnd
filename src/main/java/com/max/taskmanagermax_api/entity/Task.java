@@ -48,6 +48,11 @@ public class Task {
     @JsonBackReference
     private Set<Comment> comments = new HashSet<>();
     
+    @ManyToMany (fetch = FetchType.LAZY)
+    @JoinTable (name = "usuario_tarea", joinColumns = @JoinColumn (name = "tarea_id", referencedColumnName = "idTarea"),
+            inverseJoinColumns = @JoinColumn (name = "usuario_id", referencedColumnName = "id"))
+    private Set<User> usuarios = new HashSet<>();
+    
     public Task(String nombreTarea, String contenidoTarea, Date fechaRegistro, Date fechaFinaliza, int estado) {
         this.nombreTarea = nombreTarea;
         this.contenidoTarea = contenidoTarea;

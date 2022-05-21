@@ -3,6 +3,7 @@ package com.max.taskmanagermax_api.DTO;
 import java.util.*;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.max.taskmanagermax_api.entity.Task;
 import com.max.taskmanagermax_api.entity.User;
 import lombok.*;
@@ -23,6 +24,7 @@ public class ProjectDTO {
     private Date fechaFinaliza;
     private int  estado;
     
+    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
     private List<String> nameUser;
     private Set<User>    usuarios;
     
