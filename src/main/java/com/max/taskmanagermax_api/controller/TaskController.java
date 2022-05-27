@@ -21,7 +21,7 @@ public class TaskController {
         this.taskService = taskService;
     }
     
-    
+    @CrossOrigin(origins = "http://localhost:4200/")
     @GetMapping ("projects/{projectId}/tasks/{taskId}")
     public ResponseEntity<TaskDTO> getTask(@PathVariable (value = "projectId") long projectId,
                                             @PathVariable (value = "taskId") long taskId) {
@@ -29,11 +29,13 @@ public class TaskController {
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
     
+    @CrossOrigin(origins = "http://localhost:4200/")
     @GetMapping ("projects/{projectId}/tasks")
     public List<TaskDTO> getTasks(@PathVariable (value = "projectId") long projectId) {
         return taskService.findTasksByProjectId(projectId);
     }
     
+    @CrossOrigin(origins = "http://localhost:4200/")
     @PostMapping ("projects/{projectId}/tasks")
     public ResponseEntity<TaskDTO> createTask(@PathVariable (value = "projectId") long projectId,
                                                 @Valid @RequestBody TaskDTO taskDTO) {
@@ -41,6 +43,7 @@ public class TaskController {
         return new ResponseEntity<>(taskService.saveTask(projectId, taskDTO), HttpStatus.CREATED);
     }
     
+    @CrossOrigin(origins = "http://localhost:4200/")
     @PutMapping ("projects/{projectId}/tasks/{taskId}")
     @ResponseBody
     public ResponseEntity<TaskDTO> updateTask(@PathVariable (value = "projectId") long projectId,
@@ -50,8 +53,9 @@ public class TaskController {
         return new ResponseEntity<>(updateTasktById, HttpStatus.OK);
     }
     
+    @CrossOrigin(origins = "http://localhost:4200/")
     @DeleteMapping ("projects/{projectId}/tasks/{taskId}")
-    public ResponseEntity<String> deleteTask(@PathVariable (value = "projectId") long projectId,
+    public ResponseEntity<?> deleteTask(@PathVariable (value = "projectId") long projectId,
                                                 @PathVariable (value = "taskId") long taskId) {
         taskService.deleteTask(projectId, taskId);
         return new ResponseEntity<>("Tarea eliminada con éxito", HttpStatus.OK);
